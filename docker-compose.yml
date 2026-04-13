@@ -1,0 +1,28 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────────────────────────
+#  Carrier Lookup API
+#
+#  IMPORTANTE: Sem "ports:" – o Coolify gerencia portas via UI.
+#  A rede com o n8n é configurada no Coolify via
+#  "Connect to Predefined Network" (veja o guia INSTALACAO.md).
+# ─────────────────────────────────────────────────────────────────
+
+services:
+  carrier-api:
+    build: .
+    restart: unless-stopped
+
+    environment:
+      # Estes valores aparecem na aba "Environment Variables" do Coolify
+      # e podem ser editados por lá sem precisar alterar este arquivo.
+      MAX_CONCURRENT: "${MAX_CONCURRENT:-50}"
+      BATCH_SIZE: "${BATCH_SIZE:-500}"
+      CHECKPOINT_DIR: /data/checkpoints
+      OUTPUT_DIR: /data/outputs
+
+    volumes:
+      - carrier_data:/data
+
+volumes:
+  carrier_data:
